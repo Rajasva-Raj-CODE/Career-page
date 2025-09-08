@@ -36,14 +36,14 @@ export const JobCard = ({ job, onApply }: JobCardProps) => {
     };
 
     return (
-        <Card className="group h-full bg-card border-border shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-foreground">
+        <Card className="group h-auto bg-card border-border shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-foreground">
             <CardHeader className="pb-4">
                 <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                         <h3 className="text-xl font-bold text-foreground group-hover:text-muted-foreground transition-colors duration-300 mb-2">
                             {job.designation_directory?.designation_name}
                         </h3>
-                        <div className="flex items-center gap-4 text-muted-foreground text-sm">
+                        <div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm">
                             <div className="flex items-center gap-1">
                                 <Users className="w-4 h-4" />
                                 <span>{job.department_directory?.department_name}</span>

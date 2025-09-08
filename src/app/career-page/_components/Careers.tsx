@@ -13,6 +13,7 @@ import { ModeToggle } from "@/components/ui/mode-toggle";
 import { AllJobsRequisitionsInfo } from "../api/career-page";
 import UserMenue from "../_components/UserMenue";
 import { toast } from "sonner";
+import { Card } from "@/components/ui/card";
 
 const Careers = () => {
   const searchParams = useSearchParams();
@@ -198,7 +199,7 @@ const Careers = () => {
 
       {/* Main Content */}
       <div className="bg-background relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
             {/* Filters (Left Side) */}
             <aside className="lg:col-span-1">

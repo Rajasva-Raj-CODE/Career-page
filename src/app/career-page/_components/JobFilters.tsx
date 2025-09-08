@@ -89,7 +89,7 @@ export const JobFilters = ({
 
         {/* Department Filter */}
         <Select value={selectedDepartment} onValueChange={onDepartmentChange}>
-          <SelectTrigger className="border-border focus:border-primary focus:ring-primary/20">
+          <SelectTrigger className="w-full border-border focus:border-primary focus:ring-primary/20">
             <SelectValue placeholder="Department" />
           </SelectTrigger>
           <SelectContent>
@@ -107,7 +107,7 @@ export const JobFilters = ({
           value={selectedEmploymentType}
           onValueChange={onEmploymentTypeChange}
         >
-          <SelectTrigger className="border-border focus:border-primary focus:ring-primary/20">
+          <SelectTrigger className="w-full border-border focus:border-primary focus:ring-primary/20">
             <SelectValue placeholder="Employment Type" />
           </SelectTrigger>
           <SelectContent>
@@ -122,7 +122,7 @@ export const JobFilters = ({
 
         {/* Location Filter */}
         <Select value={selectedLocation} onValueChange={onLocationChange}>
-          <SelectTrigger className="border-border focus:border-primary focus:ring-primary/20">
+          <SelectTrigger className="w-full border-border focus:border-primary focus:ring-primary/20">
             <SelectValue placeholder="Location" />
           </SelectTrigger>
           <SelectContent>
