@@ -7,7 +7,13 @@ import { z } from "zod";
 import { registerUser } from "../career-page/api/career-page";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import {
   Form,
@@ -18,10 +24,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+
 const registerSchema = z.object({
-  company_tid: z.number(),
-  company_reg_tid: z.number(),
-  department_tid: z.number(),
+  company_fid: z.number(),
+  company_reg_fid: z.number(),
+  department_fid: z.number(),
   full_name: z.string().min(2, "Full name must be at least 2 characters"),
   login_email: z.string().email("Please enter a valid email address"),
   login_password: z.string().min(6, "Password must be at least 6 characters"),
@@ -37,9 +44,9 @@ export default function RegisterPage() {
   const form = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      company_tid: 1,
-      company_reg_tid: 1,
-      department_tid: 2,
+      company_fid: 1,
+      company_reg_fid: 1,
+      department_fid: 2,
       full_name: "",
       login_email: "",
       login_password: "",
@@ -49,42 +56,48 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterForm) => {
     setMessage("");
-
     try {
       const res = await registerUser(data);
       setMessage(res.message);
-
       if (res.status) {
         setTimeout(() => {
-          window.location.href = "/login"; 
+          window.location.href = "/login";
         }, 1000);
       }
     } catch (error: unknown) {
-      const axiosError = error as { response?: { data?: { message?: string } } };
+      const axiosError = error as {
+        response?: { data?: { message?: string } };
+      };
       setMessage(axiosError.response?.data?.message || "Something went wrong");
     }
   };
-
-
-
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-background text-foreground p-4">
       <div className="w-full max-w-md">
         <Card className="bg-card border-border shadow-2xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-bold mb-2 text-foreground">Create Account</CardTitle>
-            <CardDescription className="text-muted-foreground">Join us to get started</CardDescription>
+            <CardTitle className="text-3xl font-bold mb-2 text-foreground">
+              Create Account
+            </CardTitle>
+            <CardDescription className="text-muted-foreground">
+              Join us to get started
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
                 <FormField
                   control={form.control}
                   name="full_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-foreground">Full Name</FormLabel>
+                      <FormLabel className="text-foreground">
+                        Full Name
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="text"
@@ -141,7 +154,9 @@ export default function RegisterPage() {
                   name="login_password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-foreground">Password</FormLabel>
+                      <FormLabel className="text-foreground">
+                        Password
+                      </FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input

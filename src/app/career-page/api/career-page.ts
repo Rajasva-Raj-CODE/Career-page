@@ -1,6 +1,6 @@
 import axiosInstance from "@/api/axiosInstance";
 import axios from "@/api/axiosInstance";
-import { JobApplicationInfo } from "@/app/career-page/types/career-page";
+import { JobApplicationInfo, RegisterUserInfo } from "@/app/career-page/types/career-page";
 
 export const AllJobsRequisitionsInfo = async (
   skip: number,
@@ -43,18 +43,19 @@ export const JobApplication = async (data: JobApplicationInfo) => {
 };
 
 
-export const registerUser = async (data: any) => {
+export const registerUser = async (data: RegisterUserInfo) => {
   try {
     const response = await axiosInstance.post(
       "talent-acquisition/candidate/create",
       data
     );
-    return response.data;
+    return response.data as { status: boolean; message: string };
   } catch (error) {
     console.error("Register Error:", error);
     throw error;
   }
 };
+
 
 export const loginUser = async (data: {
   login_email: string;

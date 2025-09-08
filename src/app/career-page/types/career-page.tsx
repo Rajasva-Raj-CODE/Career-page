@@ -65,4 +65,12 @@ export interface Job {
     }
 }
 
-
+export interface RegisterUserInfo {
+  company_fid: number;
+  company_reg_fid: number;
+  department_fid: number;
+  full_name: string;
+  login_email: string;
+  login_password: string;
+  phone?: string;
+}
