@@ -255,7 +255,10 @@ export default function ProfilePage() {
                   <label className="text-foreground mb-2 block text-sm font-medium">
                     Resume
                   </label>
-                  <Card className="border-2 border-dashed border-border hover:border-foreground transition-colors cursor-pointer bg-card">
+              <Card 
+                    className="border-2 border-dashed border-border hover:border-foreground transition-colors cursor-pointer bg-card"
+                    onClick={() => document.getElementById('resume-file-input')?.click()}
+                  >
                     <CardContent className="flex flex-col items-center justify-center p-4">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -292,11 +295,13 @@ export default function ProfilePage() {
                           target="_blank"
                           rel="noopener noreferrer"
                           className="mt-2 text-xs text-foreground hover:text-muted-foreground underline"
+                          onClick={(e) => e.stopPropagation()}
                         >
                           View Current Resume
                         </a>
                       )}
                       <input
+                        id="resume-file-input"
                         type="file"
                         name="resume_file_url"
                         onChange={handleFileChange("resume_file_url")}
