@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { LogOut, User,CircleUser } from "lucide-react";
+import { LogOut, User, CircleUser } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -23,7 +23,7 @@ const UserMenue = () => {
 
   if (!isLoggedIn) {
     return (
-      <Link href="/login">
+      <Link href="/auth">
         <Button className="px-4 py-2 rounded-full">Login</Button>
       </Link>
     );
@@ -32,7 +32,6 @@ const UserMenue = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        {/* ✅ Show a nice user icon instead of avatar */}
         <div className="flex items-center justify-center h-9 w-9 rounded-full bg-gray-200 dark:bg-gray-700 cursor-pointer">
           <CircleUser className="h-5 w-5 text-gray-700 dark:text-gray-300" />
         </div>

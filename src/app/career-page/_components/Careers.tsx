@@ -140,6 +140,7 @@ const Careers = () => {
         className="relative min-h-screen bg-background overflow-hidden bg-cover bg-center"
         style={{ backgroundImage: "url('/careers-hero.jpg')" }}
       >
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 dark:from-black/70 dark:via-black/50 dark:to-black/80" />
         <div className="absolute top-6 right-6 z-50 flex items-center gap-2">
           <ModeToggle />
           <UserMenue />
