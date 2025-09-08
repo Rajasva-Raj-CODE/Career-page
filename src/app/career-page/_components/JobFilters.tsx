@@ -47,7 +47,7 @@ export const JobFilters = ({
     new Set(
       jobs
         .map((job) => job?.employee_category?.category_name)
-        .filter((type): type is string => !!type) // <-- changed here
+        .filter((type): type is string => !!type)
     )
   );
 
@@ -66,7 +66,8 @@ export const JobFilters = ({
     selectedLocation !== "all";
 
   return (
-    <div className="bg-card rounded-xl border border-border shadow-none p-6">
+    <div className="bg-card rounded-xl border border-border shadow-sm p-6 sticky top-20">
+      {/* Header */}
       <div className="flex items-center gap-2 mb-6">
         <Filter className="w-5 h-5 text-primary" />
         <h3 className="text-lg font-semibold text-foreground">
@@ -74,7 +75,7 @@ export const JobFilters = ({
         </h3>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div className="flex flex-col gap-5">
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -143,7 +144,7 @@ export const JobFilters = ({
             className="flex items-center gap-2 border-border hover:border-primary hover:text-primary transition-colors duration-300"
           >
             <X className="w-4 h-4" />
-            Clear
+            Clear Filters
           </Button>
         )}
       </div>

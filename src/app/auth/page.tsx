@@ -25,6 +25,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Suspense } from "react";
 
 // Login Schema
 const loginSchema = z.object({
@@ -47,7 +48,6 @@ type LoginForm = z.infer<typeof loginSchema>;
 type RegisterForm = z.infer<typeof registerSchema>;
 
 
-import { Suspense } from "react";
 
 function AuthPageContent() {
   const router = useRouter();
