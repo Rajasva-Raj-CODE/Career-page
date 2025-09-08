@@ -46,7 +46,10 @@ const registerSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>;
 type RegisterForm = z.infer<typeof registerSchema>;
 
-export default function AuthPage() {
+
+import { Suspense } from "react";
+
+function AuthPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tabParam = searchParams.get("tab");
@@ -193,216 +196,218 @@ export default function AuthPage() {
                     Register
                   </button>
                 </div>
-<div className="bg-card border border-border rounded-xl p-6 transition-all duration-300 ease-in-out">
-                {/* Login Form */}
-                <TabsContent value="login" className="w-full">
-                  <Form {...loginForm}>
-                    <form
-                      onSubmit={loginForm.handleSubmit(handleLogin)}
-                      className="space-y-6"
-                    >
-                      <FormField
-                        control={loginForm.control}
-                        name="login_email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-foreground">
-                              Email
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type="email"
-                                placeholder="Enter your email"
-                                className="bg-background border-border text-foreground"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={loginForm.control}
-                        name="login_password"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-foreground">
-                              Password
-                            </FormLabel>
-                            <FormControl>
-                              <div className="relative">
+                <div className="bg-card border border-border rounded-xl p-6 transition-all duration-300 ease-in-out">
+                  {/* Login Form */}
+                  <TabsContent value="login" className="w-full">
+                    <Form {...loginForm}>
+                      <form
+                        onSubmit={loginForm.handleSubmit(handleLogin)}
+                        className="space-y-6"
+                      >
+                        <FormField
+                          control={loginForm.control}
+                          name="login_email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground">
+                                Email
+                              </FormLabel>
+                              <FormControl>
                                 <Input
-                                  type={loginShowPassword ? "text" : "password"}
-                                  placeholder="Enter your password"
-                                  className="bg-background border-border text-foreground pr-12"
+                                  type="email"
+                                  placeholder="Enter your email"
+                                  className="bg-background border-border text-foreground"
                                   {...field}
                                 />
-                                <button
-                                  type="button"
-                                  className="absolute inset-y-0 right-0 px-4 flex items-center text-sm text-muted-foreground hover:text-foreground"
-                                  onClick={() =>
-                                    setLoginShowPassword(!loginShowPassword)
-                                  }
-                                >
-                                  {loginShowPassword ? (
-                                    <EyeOff size={16} />
-                                  ) : (
-                                    <Eye size={16} />
-                                  )}
-                                </button>
-                              </div>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                      <Button
-                        type="submit"
-                        disabled={isLoading}
-                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                        <FormField
+                          control={loginForm.control}
+                          name="login_password"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground">
+                                Password
+                              </FormLabel>
+                              <FormControl>
+                                <div className="relative">
+                                  <Input
+                                    type={
+                                      loginShowPassword ? "text" : "password"
+                                    }
+                                    placeholder="Enter your password"
+                                    className="bg-background border-border text-foreground pr-12"
+                                    {...field}
+                                  />
+                                  <button
+                                    type="button"
+                                    className="absolute inset-y-0 right-0 px-4 flex items-center text-sm text-muted-foreground hover:text-foreground"
+                                    onClick={() =>
+                                      setLoginShowPassword(!loginShowPassword)
+                                    }
+                                  >
+                                    {loginShowPassword ? (
+                                      <EyeOff size={16} />
+                                    ) : (
+                                      <Eye size={16} />
+                                    )}
+                                  </button>
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <Button
+                          type="submit"
+                          disabled={isLoading}
+                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                        >
+                          {isLoading ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Processing...
+                            </>
+                          ) : (
+                            "Login"
+                          )}
+                        </Button>
+                      </form>
+                    </Form>
+                  </TabsContent>
+
+                  {/* Register Form */}
+                  <TabsContent value="register" className="w-full">
+                    <Form {...registerForm}>
+                      <form
+                        onSubmit={registerForm.handleSubmit(handleRegister)}
+                        className="space-y-6"
                       >
-                        {isLoading ? (
-                          <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Processing...
-                          </>
-                        ) : (
-                          "Login"
-                        )}
-                      </Button>
-                    </form>
-                  </Form>
-                </TabsContent>
-
-                {/* Register Form */}
-                <TabsContent value="register" className="w-full">
-                  <Form {...registerForm}>
-                    <form
-                      onSubmit={registerForm.handleSubmit(handleRegister)}
-                      className="space-y-6"
-                    >
-                      <FormField
-                        control={registerForm.control}
-                        name="full_name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-foreground">
-                              Full Name
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                placeholder="Enter your full name"
-                                className="bg-background border-border text-foreground"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={registerForm.control}
-                        name="login_email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-foreground">
-                              Email
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type="email"
-                                placeholder="Enter your email"
-                                className="bg-background border-border text-foreground"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={registerForm.control}
-                        name="phone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-foreground">
-                              Phone
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                placeholder="Enter your phone number"
-                                className="bg-background border-border text-foreground"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={registerForm.control}
-                        name="login_password"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-foreground">
-                              Password
-                            </FormLabel>
-                            <FormControl>
-                              <div className="relative">
+                        <FormField
+                          control={registerForm.control}
+                          name="full_name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground">
+                                Full Name
+                              </FormLabel>
+                              <FormControl>
                                 <Input
-                                  type={
-                                    registerShowPassword ? "text" : "password"
-                                  }
-                                  placeholder="Create a password"
-                                  className="bg-background border-border text-foreground pr-12"
+                                  type="text"
+                                  placeholder="Enter your full name"
+                                  className="bg-background border-border text-foreground"
                                   {...field}
                                 />
-                                <button
-                                  type="button"
-                                  className="absolute inset-y-0 right-0 px-4 flex items-center text-sm text-muted-foreground hover:text-foreground"
-                                  onClick={() =>
-                                    setRegisterShowPassword(
-                                      !registerShowPassword
-                                    )
-                                  }
-                                >
-                                  {registerShowPassword ? (
-                                    <EyeOff size={16} />
-                                  ) : (
-                                    <Eye size={16} />
-                                  )}
-                                </button>
-                              </div>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                      <Button
-                        type="submit"
-                        disabled={isLoading}
-                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-                      >
-                        {isLoading ? (
-                          <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Processing...
-                          </>
-                        ) : (
-                          "Create Account"
-                        )}
-                      </Button>
-                    </form>
-                  </Form>
-                </TabsContent>
+                        <FormField
+                          control={registerForm.control}
+                          name="login_email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground">
+                                Email
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="email"
+                                  placeholder="Enter your email"
+                                  className="bg-background border-border text-foreground"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={registerForm.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground">
+                                Phone
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  placeholder="Enter your phone number"
+                                  className="bg-background border-border text-foreground"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={registerForm.control}
+                          name="login_password"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground">
+                                Password
+                              </FormLabel>
+                              <FormControl>
+                                <div className="relative">
+                                  <Input
+                                    type={
+                                      registerShowPassword ? "text" : "password"
+                                    }
+                                    placeholder="Create a password"
+                                    className="bg-background border-border text-foreground pr-12"
+                                    {...field}
+                                  />
+                                  <button
+                                    type="button"
+                                    className="absolute inset-y-0 right-0 px-4 flex items-center text-sm text-muted-foreground hover:text-foreground"
+                                    onClick={() =>
+                                      setRegisterShowPassword(
+                                        !registerShowPassword
+                                      )
+                                    }
+                                  >
+                                    {registerShowPassword ? (
+                                      <EyeOff size={16} />
+                                    ) : (
+                                      <Eye size={16} />
+                                    )}
+                                  </button>
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <Button
+                          type="submit"
+                          disabled={isLoading}
+                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                        >
+                          {isLoading ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Processing...
+                            </>
+                          ) : (
+                            "Create Account"
+                          )}
+                        </Button>
+                      </form>
+                    </Form>
+                  </TabsContent>
                 </div>
               </Tabs>
 
@@ -426,5 +431,13 @@ export default function AuthPage() {
         <div className="w-full h-full bg-black/40"></div>
       </div>
     </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense>
+      <AuthPageContent />
+    </Suspense>
   );
 }
