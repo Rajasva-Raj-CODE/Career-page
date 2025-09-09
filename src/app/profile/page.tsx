@@ -9,7 +9,7 @@ import { Loader2, Camera } from "lucide-react";
 import {
   getProfile,
   updateCandidateProfile
-} from "../career-page/api/career-page";
+} from "../../api/career-page";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";

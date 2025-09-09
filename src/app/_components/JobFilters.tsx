@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search, Filter, X } from "lucide-react";
-import { Job } from "../types/career-page";
+import { Job } from "@/types/career-page";
 
 interface JobFiltersProps {
   jobs: Job[];

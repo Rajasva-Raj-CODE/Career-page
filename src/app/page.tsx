@@ -1,6 +1,7 @@
 import { Suspense } from "react";
-import Careers from "./career-page/_components/Careers";
-import CareerLoading from "./career-page/_components/CareerLoading";
+import Careers from "./_components/Careers";
+import CareerLoading from "./_components/CareerLoading";
+
 
 export default function Home() {
   return (

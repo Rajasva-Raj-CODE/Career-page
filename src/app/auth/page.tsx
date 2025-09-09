@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { loginUser, registerUser } from "../career-page/api/career-page";
+import { loginUser, registerUser } from "../../api/career-page";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -103,7 +103,7 @@ function AuthPageContent() {
         localStorage.setItem("token", res.token);
         localStorage.setItem("user", JSON.stringify(res.data || res));
         localStorage.setItem("isLoggedIn", "true");
-        router.push("/career-page");
+        router.push("/");
       }
     } catch (error: unknown) {
       const axiosError = error as {

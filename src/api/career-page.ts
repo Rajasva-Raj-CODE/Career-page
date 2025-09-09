@@ -1,6 +1,6 @@
 import axiosInstance from "@/api/axiosInstance";
 import axios from "@/api/axiosInstance";
-import { JobApplicationInfo, RegisterUserInfo } from "@/app/career-page/types/career-page";
+import { JobApplicationInfo, RegisterUserInfo } from "@/types/career-page";
 
 export const AllJobsRequisitionsInfo = async (
   skip: number,

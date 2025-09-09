@@ -1,9 +1,6 @@
 "use client";
 import React from "react";
 
-// CareerLoading.tsx
-// TailwindCSS + modern black & white themed loading fallback for Career page (client-safe)
-
 export default function CareerLoading() {
   return (
     <div className="w-full min-h-screen flex items-center justify-center p-8 bg-gradient-to-br from-black via-neutral-900 to-black text-white">
@@ -88,18 +85,3 @@ export default function CareerLoading() {
   );
 }
 
-// 👉 To fix build issues, move custom animations into tailwind.config.js
-// Example in tailwind.config.js:
-// extend: {
-//   animation: {
-//     'spin-slow': 'spin 2.5s linear infinite',
-//     fadeIn: 'fadeIn 0.6s ease-in-out'
-//   },
-//   keyframes: {
-//     fadeIn: {
-//       '0%': { opacity: '0', transform: 'translateY(10px)' },
-//       '100%': { opacity: '1', transform: 'translateY(0)' },
-//     }
-//   }
-// }
-// Also add `animation-delay` utilities in CSS or via plugin.

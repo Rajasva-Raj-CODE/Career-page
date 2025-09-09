@@ -17,7 +17,6 @@ import { MapPin, Calendar, Users, IndianRupee } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { JobApplication, getProfile } from "../api/career-page";
 import { toast } from "sonner";
 import {
   Form,
@@ -27,7 +26,8 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { Job, JobApplicationInfo } from "@/app/career-page/types/career-page";
+import { Job, JobApplicationInfo } from "@/types/career-page";
+import { getProfile, JobApplication } from "@/api/career-page";
 
 interface JobApplicationDialogProps {
   job: Job | null;

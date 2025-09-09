@@ -8,12 +8,14 @@ import JobApplicationDialog from "../_components/ApplyModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Briefcase, TrendingUp, Award } from "lucide-react";
-import { Job } from "../types/career-page";
+
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import { AllJobsRequisitionsInfo } from "../api/career-page";
+
 import UserMenue from "../_components/UserMenue";
 import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
+import { Job } from "@/types/career-page";
+import { AllJobsRequisitionsInfo } from "@/api/career-page";
 
 const Careers = () => {
   const searchParams = useSearchParams();

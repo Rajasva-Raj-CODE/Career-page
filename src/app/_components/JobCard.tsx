@@ -1,8 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Job } from "@/types/career-page";
 import { MapPin, Calendar, Users, IndianRupee  } from "lucide-react";
-import { Job } from "../types/career-page";
+
 
 interface JobCardProps {
     job: Job;
