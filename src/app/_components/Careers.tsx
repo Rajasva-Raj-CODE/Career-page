@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { Job } from "@/types/career-page";
 import { AllJobsRequisitionsInfo } from "@/api/career-page";
+import Image from "next/image";
 
 const Careers = () => {
   const searchParams = useSearchParams();
@@ -143,20 +144,28 @@ const Careers = () => {
         className="relative min-h-screen bg-background overflow-hidden bg-cover bg-center"
         style={{ backgroundImage: "url('/careers-hero.jpg')" }}
       >
-        <div
-          className="
-    absolute inset-0 
-    bg-gradient-to-b 
-    from-white/40 via-white/20 to-white/40 
-    dark:from-black/70 dark:via-black/50 dark:to-black/80
-  "
-        />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/20 to-white/40 dark:from-black/70 dark:via-black/50 dark:to-black/80" />
 
-        <div className="absolute top-6 right-6 z-50 flex items-center gap-2">
-          <ModeToggle />
-          <UserMenue />
-        </div>
+        {/* Header */}
+        <header className="relative z-50 w-full px-6 py-4 flex items-center justify-between">
+          {/* Logo */}
+          <Image
+            src="/logosoft.svg"
+            alt="Company Logo"
+            width={56}
+            height={56}
+            className="w-12 h-12 sm:w-16 sm:h-16 lg:w-35 lg:h-35 object-contain"
+          />
 
+          {/* Right Controls */}
+          <div className="flex items-center gap-4">
+            <ModeToggle />
+            <UserMenue />
+          </div>
+        </header>
+
+        {/* Hero Section */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex items-center min-h-screen">
           <div className="text-center text-foreground w-full">
             <div className="animate-fade-in">
@@ -170,37 +179,38 @@ const Careers = () => {
               </p>
             </div>
 
+            {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-              <div className="group bg-gray-500/20 dark:bg-gray-300/15 rounded-2xl p-8 border border-border hover:border-foreground transition-all duration-500 ">
+              <div className="group bg-gray-500/20 dark:bg-gray-300/15 rounded-2xl p-8 border border-border hover:border-foreground transition-all duration-500">
                 <div className="bg-muted w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                   <Briefcase className="w-8 h-8 text-foreground" />
                 </div>
-                <div className="text-4xl font-bold mb-2 text-foreground ">
+                <div className="text-4xl font-bold mb-2 text-foreground">
                   {jobs.length}
                 </div>
-                <div className="text-foreground  font-medium">
+                <div className="text-foreground font-medium">
                   Open Positions
                 </div>
               </div>
 
-              <div className="group bg-gray-500/20 dark:bg-gray-300/15 rounded-2xl p-8 border border-border hover:border-foreground transition-all duration-500 ">
+              <div className="group bg-gray-500/20 dark:bg-gray-300/15 rounded-2xl p-8 border border-border hover:border-foreground transition-all duration-500">
                 <div className="bg-muted w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                   <TrendingUp className="w-8 h-8 text-foreground" />
                 </div>
-                <div className="text-4xl font-bold mb-2 text-foreground ">
+                <div className="text-4xl font-bold mb-2 text-foreground">
                   {departments.length}
                 </div>
-                <div className="text-foreground  font-medium">Departments</div>
+                <div className="text-foreground font-medium">Departments</div>
               </div>
 
-              <div className="group bg-gray-500/20 dark:bg-gray-300/15 rounded-2xl p-8 border border-border hover:border-foreground transition-all duration-500 ">
+              <div className="group bg-gray-500/20 dark:bg-gray-300/15 rounded-2xl p-8 border border-border hover:border-foreground transition-all duration-500">
                 <div className="bg-muted w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                   <Award className="w-8 h-8 text-foreground" />
                 </div>
-                <div className="text-4xl font-bold mb-2 text-foreground ">
+                <div className="text-4xl font-bold mb-2 text-foreground">
                   4.8
                 </div>
-                <div className="text-foreground  font-medium">Rating</div>
+                <div className="text-foreground font-medium">Rating</div>
               </div>
             </div>
           </div>
