@@ -13,7 +13,22 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { MapPin, Calendar, Users, IndianRupee } from "lucide-react";
+import { 
+  MapPin, 
+  Calendar, 
+  Users, 
+  IndianRupee, 
+  Briefcase, 
+  Building2, 
+  Upload,
+  User,
+  Mail,
+  Phone,
+  Linkedin,
+  FileText,
+  CheckCircle2,
+  Loader2
+} from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -165,213 +180,303 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
         if (!open) onClose();
       }}
     >
-      <DialogContent className="w-full max-w-full sm:max-w-5xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-foreground">
-            Apply for {job?.designation_directory?.designation_name ?? "Job"}
-          </DialogTitle>
-          <DialogDescription className="text-muted-foreground">
-            Review the job details and fill out the form to apply.
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="w-full max-w-full sm:max-w-6xl max-h-[95vh] overflow-y-auto p-0">
+        {/* Enhanced Header with Gradient */}
+        <div className="relative bg-gradient-to-r from-[#2c83ec] to-[#87c232] p-6 text-white">
+          <div className="absolute inset-0 bg-black/10"></div>
+          <div className="relative z-10">
+            <DialogHeader className="space-y-2">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+                  <Briefcase className="w-6 h-6" />
+                </div>
+                <div>
+                  <DialogTitle className="text-2xl font-bold">
+                    Apply for {job?.designation_directory?.designation_name ?? "Position"}
+                  </DialogTitle>
+                  <DialogDescription className="text-white/90 text-base">
+                    Join our team and make a difference
+                  </DialogDescription>
+                </div>
+              </div>
+            </DialogHeader>
+          </div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* ✅ Left Side - Job Details */}
-          {job && (
-            <Card className="bg-card border-border shadow-md">
-              <CardHeader className="pb-4">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-foreground">
-                      {job.designation_directory?.designation_name}
-                    </h3>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Users className="w-4 h-4" />
-                        <span>{job.department_directory?.department_name}</span>
+        <div className="flex-1 overflow-y-auto p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Enhanced Left Side - Job Details */}
+            {job && (
+              <div className="space-y-6">
+                <Card className="border-0 shadow-none bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Building2 className="w-5 h-5 text-[#2c83ec]" />
+                          <h3 className="text-2xl font-bold text-foreground">
+                            {job.designation_directory?.designation_name}
+                          </h3>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-2 bg-white/60 dark:bg-slate-700/60 px-3 py-1 rounded-full">
+                            <Users className="w-4 h-4" />
+                            <span className="font-medium">{job.department_directory?.department_name}</span>
+                          </div>
+                          <div className="flex items-center gap-2 bg-white/60 dark:bg-slate-700/60 px-3 py-1 rounded-full">
+                            <Calendar className="w-4 h-4" />
+                            <span>
+                              {new Date(job.created_date).toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              })}
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        <span>
-                          {new Date(job.created_date).toLocaleDateString(
-                            "en-US",
-                            {
-                              month: "short",
-                              day: "numeric",
-                              year: "numeric",
-                            }
-                          )}
-                        </span>
+                      <Badge className="bg-[#87c232] hover:bg-[#87c232]/90 text-white border-0 px-3 py-1">
+                        {job.employee_category?.category_name ?? "Full-time"}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="space-y-6">
+                    <div className="bg-white/80 dark:bg-slate-800/80 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                      <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                        <FileText className="w-4 h-4" />
+                        Job Description
+                      </h4>
+                      <p className="text-sm leading-relaxed whitespace-pre-line text-muted-foreground">
+                        {job.job_description ?? "No description available"}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="bg-white/80 dark:bg-slate-800/80 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                            <MapPin className="w-5 h-5 text-[#2c83ec]" />
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground uppercase tracking-wide">Location</p>
+                            <p className="font-semibold text-foreground">
+                              {job.location_directory?.location_name}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-white/80 dark:bg-slate-800/80 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                            <IndianRupee className="w-5 h-5 text-[#87c232]" />
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground uppercase tracking-wide">Salary Range</p>
+                            <p className="font-semibold text-foreground">
+                              ₹{(job.salary_min * 1000).toLocaleString()} - ₹{(job.salary_max * 1000).toLocaleString()}
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {/* Enhanced Right Side - Application Form */}
+            <div className="space-y-6">
+              <Card className="border-0 shadow-none bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-[#2c83ec]/10 rounded-lg">
+                      <User className="w-5 h-5 text-[#2c83ec]" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-foreground">Application Form</h3>
+                      <p className="text-sm text-muted-foreground">Fill in your details to apply</p>
+                    </div>
                   </div>
-                  <Badge>{job.employee_category?.category_name ?? "N/A"}</Badge>
-                </div>
-              </CardHeader>
+                </CardHeader>
 
-              <CardContent className="pb-6">
-                <p className="text-sm leading-relaxed mb-4 whitespace-pre-line text-muted-foreground">
-                  {job.job_description ?? "No description available"}
-                </p>
+                <CardContent>
+                  {isLoadingUserData ? (
+                    <div className="flex flex-col items-center justify-center py-12">
+                      <Loader2 className="w-8 h-8 animate-spin text-[#2c83ec] mb-4" />
+                      <p className="text-muted-foreground">Loading your information...</p>
+                    </div>
+                  ) : (
+                    <Form {...form}>
+                      <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="space-y-6"
+                        encType="multipart/form-data"
+                      >
+                        {/* Full Name */}
+                        <FormField
+                          control={form.control}
+                          name="full_name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground font-medium flex items-center gap-2">
+                                <User className="w-4 h-4" />
+                                Full Name *
+                              </FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="Enter your full name" 
+                                  {...field}
+                                  className="h-10 border-slate-200 dark:border-slate-700 focus:border-[#2c83ec] focus:ring-[#2c83ec]/20"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <MapPin className="w-4 h-4 text-blue-600" />
-                    <span className="font-medium">
-                      {job.location_directory?.location_name}
-                    </span>
-                  </div>
+                        {/* Email */}
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground font-medium flex items-center gap-2">
+                                <Mail className="w-4 h-4" />
+                                Email Address *
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="email"
+                                  placeholder="name@example.com"
+                                  {...field}
+                                  className="h-10 border-slate-200 dark:border-slate-700 focus:border-[#2c83ec] focus:ring-[#2c83ec]/20"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                  <div className="flex items-center gap-2 text-sm text-foreground">
-                    <IndianRupee className="w-4 h-4 text-green-600" />
-                    <span className="font-semibold">
-                      {(job.salary_min * 1000).toLocaleString()} -{" "}
-                      {(job.salary_max * 1000).toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+                        {/* Phone */}
+                        <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground font-medium flex items-center gap-2">
+                                <Phone className="w-4 h-4" />
+                                Phone Number *
+                              </FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="+91 98XXXXXXXX" 
+                                  {...field}
+                                  className="h-10 border-slate-200 dark:border-slate-700 focus:border-[#2c83ec] focus:ring-[#2c83ec]/20"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-          {/* ✅ Right Side - Application Form */}
-          <Card className="bg-card border-border shadow-md">
-            <CardContent>
-              {isLoadingUserData ? (
-                <div className="flex items-center justify-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-                  <span className="ml-2 text-gray-600">
-                    Loading your information...
-                  </span>
-                </div>
-              ) : (
-                <Form {...form}>
-                  <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-4"
-                    encType="multipart/form-data"
-                  >
-                    {/* Full Name */}
-                    <FormField
-                      control={form.control}
-                      name="full_name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Full Name*</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Your full name" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                        {/* LinkedIn */}
+                        <FormField
+                          control={form.control}
+                          name="linkedin_profile_url"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground font-medium flex items-center gap-2">
+                                <Linkedin className="w-4 h-4" />
+                                LinkedIn Profile *
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="https://www.linkedin.com/in/username"
+                                  {...field}
+                                  className="h-10 border-slate-200 dark:border-slate-700 focus:border-[#2c83ec] focus:ring-[#2c83ec]/20"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                    {/* Email */}
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email*</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="email"
-                              placeholder="name@example.com"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                        {/* About You */}
+                        <FormField
+                          control={form.control}
+                          name="description"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground font-medium flex items-center gap-2">
+                                <FileText className="w-4 h-4" />
+                                About You *
+                              </FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  placeholder="Tell us about yourself, your experience, and why you're interested in this role..."
+                                  {...field}
+                                  className="min-h-[120px] border-slate-200 dark:border-slate-700 focus:border-[#2c83ec] focus:ring-[#2c83ec]/20 resize-none"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                    {/* Phone */}
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Phone*</FormLabel>
-                          <FormControl>
-                            <Input placeholder="+91 98XXXXXXXX" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                        {/* Profile Image */}
+                        <FormField
+                          control={form.control}
+                          name="image_url"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-foreground font-medium flex items-center gap-2">
+                                <Upload className="w-4 h-4" />
+                                Profile Image (Optional)
+                              </FormLabel>
+                              <FormControl>
+                                <div className="relative">
+                                  <Input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                      const file = e.target.files?.[0] ?? null;
+                                      field.onChange(file);
+                                    }}
+                                    className="h-10 border-slate-200 dark:border-slate-700 focus:border-[#2c83ec] focus:ring-[#2c83ec]/20 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#2c83ec]/10 file:text-[#2c83ec] hover:file:bg-[#2c83ec]/20"
+                                  />
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-                    {/* LinkedIn */}
-                    <FormField
-                      control={form.control}
-                      name="linkedin_profile_url"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>LinkedIn Profile URL*</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="https://www.linkedin.com/in/username"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* About You */}
-                    <FormField
-                      control={form.control}
-                      name="description"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>About You*</FormLabel>
-                          <FormControl>
-                            <Textarea
-                              placeholder="Tell us about yourself"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    {/* Profile Image */}
-                    <FormField
-                      control={form.control}
-                      name="image_url"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Profile Image (optional)</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => {
-                                const file = e.target.files?.[0] ?? null;
-                                field.onChange(file);
-                              }}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <Button
-                      type="submit"
-                      disabled={form.formState.isSubmitting}
-                      className="w-full"
-                    >
-                      {form.formState.isSubmitting
-                        ? "Submitting..."
-                        : "Submit Application"}
-                    </Button>
-                  </form>
-                </Form>
-              )}
-            </CardContent>
-          </Card>
+                        <Button
+                          type="submit"
+                          disabled={form.formState.isSubmitting}
+                          className="w-full h-12 bg-gradient-to-r from-[#2c83ec] to-[#87c232] hover:from-[#2c83ec]/90 hover:to-[#87c232]/90 text-white font-semibold text-base shadow-none hover:shadow-none transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {form.formState.isSubmitting ? (
+                            <div className="flex items-center gap-2">
+                              <Loader2 className="w-5 h-5 animate-spin" />
+                              Submitting Application...
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="w-5 h-5" />
+                              Submit Application
+                            </div>
+                          )}
+                        </Button>
+                      </form>
+                    </Form>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

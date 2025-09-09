@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-providers";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 
@@ -31,6 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
+          <Toaster position="bottom-right" richColors />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
