@@ -89,13 +89,13 @@ export const JobFilters = ({
 
         {/* Department Filter */}
         <Select value={selectedDepartment} onValueChange={onDepartmentChange}>
-          <SelectTrigger className="w-full border-border focus:border-primary focus:ring-primary/20">
+          <SelectTrigger className="w-full cursor-pointer border-border focus:border-primary focus:ring-primary/20">
             <SelectValue placeholder="Department" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Departments</SelectItem>
             {departments.map((dept) => (
-              <SelectItem key={dept} value={dept}>
+              <SelectItem key={dept} value={dept} className="cursor-pointer">
                 {dept}
               </SelectItem>
             ))}
@@ -107,13 +107,13 @@ export const JobFilters = ({
           value={selectedEmploymentType}
           onValueChange={onEmploymentTypeChange}
         >
-          <SelectTrigger className="w-full border-border focus:border-primary focus:ring-primary/20">
+          <SelectTrigger className="w-full cursor-pointer border-border focus:border-primary focus:ring-primary/20">
             <SelectValue placeholder="Employment Type" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Types</SelectItem>
             {employmentTypes.map((type) => (
-              <SelectItem key={type} value={type}>
+              <SelectItem key={type} value={type} className="cursor-pointer">
                 {type.replace(/_/g, " ")}
               </SelectItem>
             ))}
@@ -122,13 +122,13 @@ export const JobFilters = ({
 
         {/* Location Filter */}
         <Select value={selectedLocation} onValueChange={onLocationChange}>
-          <SelectTrigger className="w-full border-border focus:border-primary focus:ring-primary/20">
+          <SelectTrigger className="w-full cursor-pointer border-border focus:border-primary focus:ring-primary/20">
             <SelectValue placeholder="Location" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Locations</SelectItem>
             {locations.map((location) => (
-              <SelectItem key={location} value={location}>
+              <SelectItem key={location} value={location} className="cursor-pointer">
                 {location}
               </SelectItem>
             ))}

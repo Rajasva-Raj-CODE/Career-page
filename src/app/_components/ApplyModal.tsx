@@ -86,7 +86,7 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
   useEffect(() => {
     const fetchUserData = async () => {
       if (!isOpen) return;
-      
+
       // Check if user is logged in
       const isLoggedIn = localStorage.getItem("isLoggedIn");
       if (!isLoggedIn || isLoggedIn !== "true") {
@@ -106,7 +106,7 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
       try {
         const profileResponse = await getProfile();
         const userData = profileResponse.data;
-        
+
         // Pre-populate form with user data
         form.reset({
           full_name: userData.full_name || "",
@@ -165,12 +165,12 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
         if (!open) onClose();
       }}
     >
-      <DialogContent className="max-w-5xl">
+      <DialogContent className="w-full max-w-full sm:max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="text-foreground">
             Apply for {job?.designation_directory?.designation_name ?? "Job"}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-muted-foreground">
             Review the job details and fill out the form to apply.
           </DialogDescription>
         </DialogHeader>
@@ -182,10 +182,10 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900">
+                    <h3 className="text-xl font-bold text-foreground">
                       {job.designation_directory?.designation_name}
                     </h3>
-                    <div className="flex items-center gap-4 text-gray-500 text-sm">
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Users className="w-4 h-4" />
                         <span>{job.department_directory?.department_name}</span>
@@ -205,28 +205,26 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
                       </div>
                     </div>
                   </div>
-                  <Badge>
-                    {job.employee_category?.category_name ?? "N/A"}
-                  </Badge>
+                  <Badge>{job.employee_category?.category_name ?? "N/A"}</Badge>
                 </div>
               </CardHeader>
 
               <CardContent className="pb-6">
-                <p className="text-gray-600 text-sm leading-relaxed mb-4 whitespace-pre-line">
+                <p className="text-sm leading-relaxed mb-4 whitespace-pre-line text-muted-foreground">
                   {job.job_description ?? "No description available"}
                 </p>
 
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <MapPin className="w-4 h-4 text-blue-600" />
                     <span className="font-medium">
                       {job.location_directory?.location_name}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm">
+                  <div className="flex items-center gap-2 text-sm text-foreground">
                     <IndianRupee className="w-4 h-4 text-green-600" />
-                    <span className="font-semibold text-green-700">
+                    <span className="font-semibold">
                       {(job.salary_min * 1000).toLocaleString()} -{" "}
                       {(job.salary_max * 1000).toLocaleString()}
                     </span>
@@ -242,7 +240,9 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
               {isLoadingUserData ? (
                 <div className="flex items-center justify-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-                  <span className="ml-2 text-gray-600">Loading your information...</span>
+                  <span className="ml-2 text-gray-600">
+                    Loading your information...
+                  </span>
                 </div>
               ) : (
                 <Form {...form}>
@@ -251,112 +251,112 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
                     className="space-y-4"
                     encType="multipart/form-data"
                   >
-                  {/* Full Name */}
-                  <FormField
-                    control={form.control}
-                    name="full_name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name*</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Your full name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    {/* Full Name */}
+                    <FormField
+                      control={form.control}
+                      name="full_name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Full Name*</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Your full name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  {/* Email */}
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email*</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="email"
-                            placeholder="name@example.com"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    {/* Email */}
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email*</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="name@example.com"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  {/* Phone */}
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone*</FormLabel>
-                        <FormControl>
-                          <Input placeholder="+91 98XXXXXXXX" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    {/* Phone */}
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone*</FormLabel>
+                          <FormControl>
+                            <Input placeholder="+91 98XXXXXXXX" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  {/* LinkedIn */}
-                  <FormField
-                    control={form.control}
-                    name="linkedin_profile_url"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>LinkedIn Profile URL*</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="https://www.linkedin.com/in/username"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    {/* LinkedIn */}
+                    <FormField
+                      control={form.control}
+                      name="linkedin_profile_url"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>LinkedIn Profile URL*</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="https://www.linkedin.com/in/username"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  {/* About You */}
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>About You*</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Tell us about yourself"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    {/* About You */}
+                    <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>About You*</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Tell us about yourself"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  {/* Profile Image */}
-                  <FormField
-                    control={form.control}
-                    name="image_url"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Profile Image (optional)</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0] ?? null;
-                              field.onChange(file);
-                            }}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    {/* Profile Image */}
+                    <FormField
+                      control={form.control}
+                      name="image_url"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Profile Image (optional)</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0] ?? null;
+                                field.onChange(file);
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
                     <Button
                       type="submit"
