@@ -6,7 +6,7 @@ import React from "react";
 
 export default function CareerLoading() {
   return (
-    <div className="w-full min-h-[320px] flex items-center justify-center p-8 bg-gradient-to-br from-black via-neutral-900 to-black text-white">
+    <div className="w-full min-h-screen flex items-center justify-center p-8 bg-gradient-to-br from-black via-neutral-900 to-black text-white">
       <div className="flex flex-col items-center gap-8 animate-fadeIn">
         {/* Animated Career Logo / Globe */}
         <div className="relative flex items-center justify-center w-24 h-24">
