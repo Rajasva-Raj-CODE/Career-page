@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { JobCard } from "../_components/JobCard";
 import { JobFilters } from "../_components/JobFilters";
 import JobApplicationDialog from "../_components/ApplyModal";
+import LoginDialog from "../_components/LoginDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Briefcase, TrendingUp, Award } from "lucide-react";
@@ -13,7 +14,6 @@ import { ModeToggle } from "@/components/ui/mode-toggle";
 
 import UserMenue from "../_components/UserMenue";
 import { toast } from "sonner";
-import { Card } from "@/components/ui/card";
 import { Job } from "@/types/career-page";
 import { AllJobsRequisitionsInfo } from "@/api/career-page";
 import Image from "next/image";
@@ -27,6 +27,7 @@ const Careers = () => {
   const [selectedLocation, setSelectedLocation] = useState("all");
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -127,14 +128,30 @@ const Careers = () => {
       localStorage.setItem("pendingJobApplication", JSON.stringify(job));
       // Show toast message
       toast.info("Please login to apply for this job");
-      // Redirect to login page
-      window.location.href = "/login";
+      // Open login dialog
+      setIsLoginDialogOpen(true);
       return;
     }
 
     // If logged in, proceed with application
     setSelectedJob(job);
     setIsApplyModalOpen(true);
+  };
+
+  const handleLoginSuccess = () => {
+    // Check if there's a pending job application
+    const pendingJob = localStorage.getItem("pendingJobApplication");
+    if (pendingJob) {
+      try {
+        const jobData = JSON.parse(pendingJob);
+        setSelectedJob(jobData);
+        setIsApplyModalOpen(true);
+        // Clear the pending job
+        localStorage.removeItem("pendingJobApplication");
+      } catch (error) {
+        console.error("Error parsing pending job application:", error);
+      }
+    }
   };
 
   return (
@@ -153,9 +170,9 @@ const Careers = () => {
           <Image
             src="/logosoft.svg"
             alt="Company Logo"
-            width={56}
-            height={56}
-            className="w-12 h-12 sm:w-16 sm:h-16 lg:w-35 lg:h-35 object-contain"
+            width={100}
+            height={100}
+            className=" object-contain"
           />
 
           {/* Right Controls */}
@@ -181,9 +198,9 @@ const Careers = () => {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-              <div className="group bg-gray-500/20 dark:bg-gray-300/15 rounded-2xl p-8 border border-border hover:border-foreground transition-all duration-500">
-                <div className="bg-muted w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Briefcase className="w-8 h-8 text-foreground" />
+              <div className="group bg-white/20 dark:bg-slate-800/20 backdrop-blur-sm rounded-2xl p-8 border border-white/30 dark:border-slate-700/30 hover:border-[#2c83ec]/50 transition-all duration-500 hover:shadow-brand-lg">
+                <div className="bg-gradient-to-br from-[#2c83ec]/20 to-[#87c232]/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Briefcase className="w-8 h-8 text-[#2c83ec]" />
                 </div>
                 <div className="text-4xl font-bold mb-2 text-foreground">
                   {jobs.length}
@@ -193,9 +210,9 @@ const Careers = () => {
                 </div>
               </div>
 
-              <div className="group bg-gray-500/20 dark:bg-gray-300/15 rounded-2xl p-8 border border-border hover:border-foreground transition-all duration-500">
-                <div className="bg-muted w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <TrendingUp className="w-8 h-8 text-foreground" />
+              <div className="group bg-white/20 dark:bg-slate-800/20 backdrop-blur-sm rounded-2xl p-8 border border-white/30 dark:border-slate-700/30 hover:border-[#87c232]/50 transition-all duration-500 hover:shadow-brand-lg">
+                <div className="bg-gradient-to-br from-[#87c232]/20 to-[#2c83ec]/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <TrendingUp className="w-8 h-8 text-[#87c232]" />
                 </div>
                 <div className="text-4xl font-bold mb-2 text-foreground">
                   {departments.length}
@@ -203,9 +220,9 @@ const Careers = () => {
                 <div className="text-foreground font-medium">Departments</div>
               </div>
 
-              <div className="group bg-gray-500/20 dark:bg-gray-300/15 rounded-2xl p-8 border border-border hover:border-foreground transition-all duration-500">
-                <div className="bg-muted w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Award className="w-8 h-8 text-foreground" />
+              <div className="group bg-white/20 dark:bg-slate-800/20 backdrop-blur-sm rounded-2xl p-8 border border-white/30 dark:border-slate-700/30 hover:border-[#2c83ec]/50 transition-all duration-500 hover:shadow-brand-lg">
+                <div className="bg-gradient-to-br from-[#2c83ec]/20 to-[#87c232]/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Award className="w-8 h-8 text-[#2c83ec]" />
                 </div>
                 <div className="text-4xl font-bold mb-2 text-foreground">
                   4.8
@@ -308,6 +325,12 @@ const Careers = () => {
         isOpen={isApplyModalOpen}
         onClose={() => setIsApplyModalOpen(false)}
         job={selectedJob}
+      />
+
+      <LoginDialog
+        isOpen={isLoginDialogOpen}
+        onClose={() => setIsLoginDialogOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
       />
     </div>
   );
