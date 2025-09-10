@@ -25,7 +25,8 @@ interface JobCardProps {
 }
 
 export const JobCard = ({ job, onApply }: JobCardProps) => {
-  useEffect(() => {
+
+    useEffect(() => {
     if (window.location.hash) {
       const id = window.location.hash.replace("#", "");
       const el = document.getElementById(id);
@@ -36,7 +37,7 @@ export const JobCard = ({ job, onApply }: JobCardProps) => {
       }
     }
   }, []);
-
+  
   // ✅ Salary formatter with frequency scaling
   const formatSalary = (
     min: number,
@@ -87,15 +88,15 @@ export const JobCard = ({ job, onApply }: JobCardProps) => {
   };
 
   // ✅ helper for structured share text (without apply link)
-  const buildShareText = (job: Job) => {
-    const salary = formatSalary(
-      job.salary_min,
-      job.salary_max,
-      job.salary_frequency,
-      job.salary_currency
-    );
+const buildShareText = (job: Job) => {
+  const salary = formatSalary(
+    job.salary_min,
+    job.salary_max,
+    job.salary_frequency,
+    job.salary_currency
+  );
 
-    return `
+  return `
 Job Opportunity: ${job.designation_directory?.designation_name}
 
 📍 Location: ${job.location_directory?.location_name}
@@ -104,9 +105,11 @@ Job Opportunity: ${job.designation_directory?.designation_name}
 📝 Description:
 ${job.job_description}
 
-👉 Apply here: http://localhost:3000/#job-${job.id}
+👉 Apply here: https://career-page-chi.vercel.app/#job-${job.id}
   `.trim();
-  };
+};
+
+
 
   return (
     <Card className="group relative h-full py-2 bg-gradient-to-br from-white via-slate-50/50 to-slate-100/80 dark:from-slate-900 dark:via-slate-800/80 dark:to-slate-800 border border-slate-200/50 dark:border-slate-700/50 rounded-xl sm:rounded-2xl shadow-none hover:shadow-none hover:shadow-[#2c83ec]/10 transition-all duration-500 hover:border-[#2c83ec]/30 overflow-hidden">
@@ -231,31 +234,32 @@ ${job.job_description}
             <span className="mr-1 sm:mr-2">Apply Now</span>
             <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
           </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-10 sm:h-12 w-10 sm:w-12 xs:w-auto xs:px-3 sm:px-4 border-slate-200 dark:border-slate-700 hover:border-[#2c83ec] hover:bg-[#2c83ec]/10 hover:text-[#2c83ec] transition-all duration-300 rounded-lg sm:rounded-xl group/share"
-            onClick={() => {
-              const shareData = {
-                title: job.designation_directory?.designation_name,
-                text: buildShareText(job),
-              };
+<Button
+  variant="outline"
+  size="icon"
+  className="h-10 sm:h-12 w-10 sm:w-12 xs:w-auto xs:px-3 sm:px-4 border-slate-200 dark:border-slate-700 hover:border-[#2c83ec] hover:bg-[#2c83ec]/10 hover:text-[#2c83ec] transition-all duration-300 rounded-lg sm:rounded-xl group/share"
+  onClick={() => {
+    const shareData = {
+      title: job.designation_directory?.designation_name,
+      text: buildShareText(job),
+    };
 
-              if (navigator.share) {
-                navigator
-                  .share(shareData)
-                  .catch((err) => console.log("Share failed:", err));
-              } else {
-                navigator.clipboard.writeText(shareData.text);
-                alert("Job details copied to clipboard!");
-              }
-            }}
-          >
-            <Share2 className="w-3 h-3 sm:w-4 sm:h-4 group-hover/share:scale-110 transition-transform duration-300" />
-            <span className="hidden xs:inline ml-1 sm:ml-2 font-medium text-xs sm:text-sm">
-              Share
-            </span>
-          </Button>
+    if (navigator.share) {
+      navigator
+        .share(shareData)
+        .catch((err) => console.log("Share failed:", err));
+    } else {
+      navigator.clipboard.writeText(shareData.text);
+      alert("Job details copied to clipboard!");
+    }
+  }}
+>
+  <Share2 className="w-3 h-3 sm:w-4 sm:h-4 group-hover/share:scale-110 transition-transform duration-300" />
+  <span className="hidden xs:inline ml-1 sm:ml-2 font-medium text-xs sm:text-sm">
+    Share
+  </span>
+</Button>
+
         </div>
       </CardFooter>
     </Card>
