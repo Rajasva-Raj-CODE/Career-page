@@ -45,7 +45,6 @@ const Careers = () => {
     fetchJobs();
   }, []);
 
-
   // Handle URL parameter for auto-opening application modal after login
   useEffect(() => {
     const applyParam = searchParams.get("apply");
@@ -286,6 +285,7 @@ const Careers = () => {
                   {filteredJobs.map((job, index) => (
                     <div
                       key={job.id}
+                      id={`job-${job.id}`} // ✅ Anchor for share link
                       className="animate-fade-in"
                       style={{ animationDelay: `${index * 0.1}s` }}
                     >

@@ -17,6 +17,7 @@ import {
   Clock,
   ArrowRight,
 } from "lucide-react";
+import { useEffect } from "react";
 
 interface JobCardProps {
   job: Job;
@@ -24,6 +25,18 @@ interface JobCardProps {
 }
 
 export const JobCard = ({ job, onApply }: JobCardProps) => {
+  useEffect(() => {
+    if (window.location.hash) {
+      const id = window.location.hash.replace("#", "");
+      const el = document.getElementById(id);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 300); // wait for content render
+      }
+    }
+  }, []);
+
   // ✅ Salary formatter with frequency scaling
   const formatSalary = (
     min: number,
@@ -90,6 +103,8 @@ Job Opportunity: ${job.designation_directory?.designation_name}
 
 📝 Description:
 ${job.job_description}
+
+👉 Apply here: http://localhost:3000/#job-${job.id}
   `.trim();
   };
 
@@ -216,7 +231,6 @@ ${job.job_description}
             <span className="mr-1 sm:mr-2">Apply Now</span>
             <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
           </Button>
-
           <Button
             variant="outline"
             size="icon"
