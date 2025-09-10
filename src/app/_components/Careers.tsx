@@ -33,6 +33,7 @@ const Careers = () => {
     const fetchJobs = async () => {
       try {
         const response = await AllJobsRequisitionsInfo(0, 100, "", "", "", "");
+        console.log("AllJobsRequisitionsInfo response:", response); // Debug log
         if (response?.status && response?.data) {
           setJobs(response.data);
         }
@@ -43,6 +44,7 @@ const Careers = () => {
 
     fetchJobs();
   }, []);
+
 
   // Handle URL parameter for auto-opening application modal after login
   useEffect(() => {

@@ -7,15 +7,15 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Job } from "@/types/career-page";
-import { 
-  MapPin, 
-  Calendar, 
-  Users, 
-  IndianRupee, 
-  Share2, 
-  Building2, 
+import {
+  MapPin,
+  Calendar,
+  Users,
+  IndianRupee,
+  Share2,
+  Building2,
   Clock,
-  ArrowRight
+  ArrowRight,
 } from "lucide-react";
 
 interface JobCardProps {
@@ -24,10 +24,32 @@ interface JobCardProps {
 }
 
 export const JobCard = ({ job, onApply }: JobCardProps) => {
-  const formatSalary = (min: number, max: number) => {
-    return `${(min * 1000).toLocaleString()} - ${(
-      max * 1000
-    ).toLocaleString()}`;
+  // ✅ Salary formatter with frequency scaling
+  const formatSalary = (
+    min: number,
+    max: number,
+    frequency: string,
+    currency: string
+  ) => {
+    let multiplier = 1;
+
+    if (frequency === "MONTHLY") {
+      multiplier = 1000; // convert to actual rupees (5 -> 5000)
+    } else if (frequency === "ANNUALLY") {
+      multiplier = 100000; // convert lakhs to actual rupees (5 -> 5,00,000)
+    }
+
+    const minSalary = (min * multiplier).toLocaleString("en-IN");
+    const maxSalary = (max * multiplier).toLocaleString("en-IN");
+
+    const freqLabel: Record<string, string> = {
+      MONTHLY: "per month",
+      ANNUALLY: "per year",
+    };
+
+    return `${currency} ${minSalary} - ${maxSalary} ${
+      freqLabel[frequency] || ""
+    }`;
   };
 
   const formatDate = (dateString: string) => {
@@ -51,11 +73,31 @@ export const JobCard = ({ job, onApply }: JobCardProps) => {
     }
   };
 
+  // ✅ helper for structured share text (without apply link)
+  const buildShareText = (job: Job) => {
+    const salary = formatSalary(
+      job.salary_min,
+      job.salary_max,
+      job.salary_frequency,
+      job.salary_currency
+    );
+
+    return `
+Job Opportunity: ${job.designation_directory?.designation_name}
+
+📍 Location: ${job.location_directory?.location_name}
+💰 Salary: ${salary}
+
+📝 Description:
+${job.job_description}
+  `.trim();
+  };
+
   return (
     <Card className="group relative h-full py-2 bg-gradient-to-br from-white via-slate-50/50 to-slate-100/80 dark:from-slate-900 dark:via-slate-800/80 dark:to-slate-800 border border-slate-200/50 dark:border-slate-700/50 rounded-xl sm:rounded-2xl shadow-none hover:shadow-none hover:shadow-[#2c83ec]/10 transition-all duration-500 hover:border-[#2c83ec]/30 overflow-hidden">
       {/* Decorative gradient overlay */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#2c83ec] via-[#87c232] to-[#2c83ec] opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
-      
+
       <CardHeader className="pb-3 sm:pb-4 pt-4 sm:pt-6 px-4 sm:px-6">
         {/* Header Section */}
         <div className="space-y-3 sm:space-y-4">
@@ -75,7 +117,7 @@ export const JobCard = ({ job, onApply }: JobCardProps) => {
                 </div>
               </div>
             </div>
-            
+
             {/* Employment Type Badge */}
             <div className="flex-shrink-0 self-start">
               <Badge
@@ -113,7 +155,9 @@ export const JobCard = ({ job, onApply }: JobCardProps) => {
             <div className="p-1 bg-[#87c232]/10 rounded-lg flex-shrink-0">
               <Clock className="w-3 h-3 sm:w-4 sm:h-4 text-[#87c232]" />
             </div>
-            <h4 className="font-semibold text-foreground text-xs sm:text-sm">Job Description</h4>
+            <h4 className="font-semibold text-foreground text-xs sm:text-sm">
+              Job Description
+            </h4>
           </div>
           <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed line-clamp-3 pl-5 sm:pl-7">
             {job.job_description}
@@ -150,7 +194,12 @@ export const JobCard = ({ job, onApply }: JobCardProps) => {
                   Salary Range
                 </p>
                 <p className="font-bold text-foreground text-xs sm:text-sm">
-                  ₹{formatSalary(job.salary_min, job.salary_max)}
+                  {formatSalary(
+                    job.salary_min,
+                    job.salary_max,
+                    job.salary_frequency,
+                    job.salary_currency
+                  )}
                 </p>
               </div>
             </div>
@@ -173,22 +222,25 @@ export const JobCard = ({ job, onApply }: JobCardProps) => {
             size="icon"
             className="h-10 sm:h-12 w-10 sm:w-12 xs:w-auto xs:px-3 sm:px-4 border-slate-200 dark:border-slate-700 hover:border-[#2c83ec] hover:bg-[#2c83ec]/10 hover:text-[#2c83ec] transition-all duration-300 rounded-lg sm:rounded-xl group/share"
             onClick={() => {
+              const shareData = {
+                title: job.designation_directory?.designation_name,
+                text: buildShareText(job),
+              };
+
               if (navigator.share) {
                 navigator
-                  .share({
-                    title: job.designation_directory?.designation_name,
-                    text: job.job_description,
-                    url: window.location.href,
-                  })
+                  .share(shareData)
                   .catch((err) => console.log("Share failed:", err));
               } else {
-                navigator.clipboard.writeText(window.location.href);
-                alert("Link copied to clipboard!");
+                navigator.clipboard.writeText(shareData.text);
+                alert("Job details copied to clipboard!");
               }
             }}
           >
             <Share2 className="w-3 h-3 sm:w-4 sm:h-4 group-hover/share:scale-110 transition-transform duration-300" />
-            <span className="hidden xs:inline ml-1 sm:ml-2 font-medium text-xs sm:text-sm">Share</span>
+            <span className="hidden xs:inline ml-1 sm:ml-2 font-medium text-xs sm:text-sm">
+              Share
+            </span>
           </Button>
         </div>
       </CardFooter>
