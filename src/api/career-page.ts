@@ -35,6 +35,7 @@ export const JobApplication = async (data: JobApplicationInfo) => {
         },
       }
     );
+
     return response.data;
   } catch (error) {
     console.error("Error in Job Application:", error);

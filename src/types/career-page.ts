@@ -6,6 +6,7 @@ export interface JobApplicationInfo {
     linkedin_profile_url: string;
     description: string;
     job_requisition_fid: number;
+    candidate_fid?: number;
     company_fid: number;
     company_reg_fid: number;
     department_fid: number;

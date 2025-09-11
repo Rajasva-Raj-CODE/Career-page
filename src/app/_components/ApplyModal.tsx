@@ -84,6 +84,7 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
   onClose,
 }) => {
   const [isLoadingUserData, setIsLoadingUserData] = React.useState(false);
+  const [userId, setUserId] = React.useState<number | null>(null); // To store candidate_fid
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -121,6 +122,7 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
       try {
         const profileResponse = await getProfile();
         const userData = profileResponse.data;
+        setUserId(userData.id); // Set candidate_fid
 
         // Pre-populate form with user data
         form.reset({
@@ -157,13 +159,16 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
     const jobApplicationData: JobApplicationInfo = {
       ...values,
       job_requisition_fid: job.id ?? 0,
+      candidate_fid: userId ?? undefined,
       company_fid: job.company_fid,
       company_reg_fid: job.company_reg_fid,
       department_fid: job.department_fid,
     };
 
+    console.log("Application submitted:---------", jobApplicationData);
     try {
-      await JobApplication(jobApplicationData);
+      const response = await JobApplication(jobApplicationData);
+      
       toast.success("Application submitted successfully");
       form.reset();
       onClose();
