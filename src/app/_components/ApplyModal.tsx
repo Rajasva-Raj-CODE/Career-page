@@ -13,13 +13,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { 
-  MapPin, 
-  Calendar, 
-  Users, 
-  IndianRupee, 
-  Briefcase, 
-  Building2, 
+import {
+  MapPin,
+  Calendar,
+  Users,
+  IndianRupee,
+  Briefcase,
+  Building2,
   Upload,
   User,
   Mail,
@@ -27,7 +27,7 @@ import {
   Linkedin,
   FileText,
   CheckCircle2,
-  Loader2
+  Loader2,
 } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -153,30 +153,68 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
   }, [isOpen, form]);
 
   // ✅ Submit handler
-  const onSubmit = async (values: FormValues) => {
-    if (!job) return;
+const onSubmit = async (values: FormValues) => {
+  if (!job) return;
 
-    const jobApplicationData: JobApplicationInfo = {
-      ...values,
-      job_requisition_fid: job.id ?? 0,
-      candidate_fid: userId ?? undefined,
-      company_fid: job.company_fid,
-      company_reg_fid: job.company_reg_fid,
-      department_fid: job.department_fid,
-    };
+  const jobApplicationData: JobApplicationInfo = {
+    ...values,
+    job_requisition_fid: job.id ?? 0,
+    candidate_fid: userId ?? undefined,
+    company_fid: job.company_fid,
+    company_reg_fid: job.company_reg_fid,
+    department_fid: job.department_fid,
+  };
 
-    console.log("Application submitted:---------", jobApplicationData);
-    try {
-      const response = await JobApplication(jobApplicationData);
-      
-      toast.success("Application submitted successfully");
+  console.log("Application submitted:---------", jobApplicationData);
+
+  try {
+    const response = await JobApplication(jobApplicationData);
+
+    const status = response?.data?.status;
+    const message = response?.data?.message;
+    const error = response?.data?.error; // optional extra info
+
+    if (status === false) {
+      // 🔥 Only backend response shown
+      toast.error(message || error || "Something went wrong");
+    } else {
+      toast.success(message || ""); // only backend message
       form.reset();
       onClose();
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to submit application");
     }
-  };
+  } catch (error: unknown) {
+    console.error("API Error:", error);
+
+    // ✅ Handle network / unexpected error
+    let errorMessage = "Something went wrong!";
+    if (typeof error === "object" && error !== null) {
+      // Check for error.response?.data?.message or error.response?.data?.error
+      const maybeResponse = (error as { response?: unknown }).response;
+      if (
+        maybeResponse &&
+        typeof maybeResponse === "object" &&
+        "data" in maybeResponse &&
+        typeof (maybeResponse as { data?: unknown }).data === "object" &&
+        (maybeResponse as { data?: unknown }).data !== null
+      ) {
+        const data = (maybeResponse as { data?: { message?: string; error?: string } }).data;
+        if (data && typeof data === "object") {
+          const maybeMessage = (data as { message?: unknown }).message;
+          const maybeError = (data as { error?: unknown }).error;
+          if (typeof maybeMessage === "string") {
+            errorMessage = maybeMessage;
+          } else if (typeof maybeError === "string") {
+            errorMessage = maybeError;
+          }
+        }
+      } else if ("message" in error && typeof (error as { message?: unknown }).message === "string") {
+        errorMessage = (error as { message: string }).message;
+      }
+    }
+    toast.error(errorMessage);
+  }
+};
+
 
   return (
     <Dialog
@@ -197,7 +235,8 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
                 </div>
                 <div>
                   <DialogTitle className="text-2xl font-bold">
-                    Apply for {job?.designation_directory?.designation_name ?? "Position"}
+                    Apply for{" "}
+                    {job?.designation_directory?.designation_name ?? "Position"}
                   </DialogTitle>
                   <DialogDescription className="text-white/90 text-base">
                     Join our team and make a difference
@@ -226,16 +265,21 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
                         <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-2 bg-white/60 dark:bg-slate-700/60 px-3 py-1 rounded-full">
                             <Users className="w-4 h-4" />
-                            <span className="font-medium">{job.department_directory?.department_name}</span>
+                            <span className="font-medium">
+                              {job.department_directory?.department_name}
+                            </span>
                           </div>
                           <div className="flex items-center gap-2 bg-white/60 dark:bg-slate-700/60 px-3 py-1 rounded-full">
                             <Calendar className="w-4 h-4" />
                             <span>
-                              {new Date(job.created_date).toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                              })}
+                              {new Date(job.created_date).toLocaleDateString(
+                                "en-US",
+                                {
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "numeric",
+                                }
+                              )}
                             </span>
                           </div>
                         </div>
@@ -264,7 +308,9 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
                             <MapPin className="w-5 h-5 text-[#2c83ec]" />
                           </div>
                           <div>
-                            <p className="text-xs text-muted-foreground uppercase tracking-wide">Location</p>
+                            <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                              Location
+                            </p>
                             <p className="font-semibold text-foreground">
                               {job.location_directory?.location_name}
                             </p>
@@ -278,9 +324,12 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
                             <IndianRupee className="w-5 h-5 text-[#87c232]" />
                           </div>
                           <div>
-                            <p className="text-xs text-muted-foreground uppercase tracking-wide">Salary Range</p>
+                            <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                              Salary Range
+                            </p>
                             <p className="font-semibold text-foreground">
-                              ₹{(job.salary_min * 1000).toLocaleString()} - ₹{(job.salary_max * 1000).toLocaleString()}
+                              ₹{(job.salary_min * 1000).toLocaleString()} - ₹
+                              {(job.salary_max * 1000).toLocaleString()}
                             </p>
                           </div>
                         </div>
@@ -300,8 +349,12 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
                       <User className="w-5 h-5 text-[#2c83ec]" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-foreground">Application Form</h3>
-                      <p className="text-sm text-muted-foreground">Fill in your details to apply</p>
+                      <h3 className="text-xl font-bold text-foreground">
+                        Application Form
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Fill in your details to apply
+                      </p>
                     </div>
                   </div>
                 </CardHeader>
@@ -310,7 +363,9 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
                   {isLoadingUserData ? (
                     <div className="flex flex-col items-center justify-center py-12">
                       <Loader2 className="w-8 h-8 animate-spin text-[#2c83ec] mb-4" />
-                      <p className="text-muted-foreground">Loading your information...</p>
+                      <p className="text-muted-foreground">
+                        Loading your information...
+                      </p>
                     </div>
                   ) : (
                     <Form {...form}>
@@ -330,8 +385,8 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
                                 Full Name *
                               </FormLabel>
                               <FormControl>
-                                <Input 
-                                  placeholder="Enter your full name" 
+                                <Input
+                                  placeholder="Enter your full name"
                                   {...field}
                                   className="h-10 border-slate-200 dark:border-slate-700 focus:border-[#2c83ec] focus:ring-[#2c83ec]/20"
                                 />
@@ -375,8 +430,8 @@ export const JobApplicationDialog: React.FC<JobApplicationDialogProps> = ({
                                 Phone Number *
                               </FormLabel>
                               <FormControl>
-                                <Input 
-                                  placeholder="+91 98XXXXXXXX" 
+                                <Input
+                                  placeholder="+91 98XXXXXXXX"
                                   {...field}
                                   className="h-10 border-slate-200 dark:border-slate-700 focus:border-[#2c83ec] focus:ring-[#2c83ec]/20"
                                 />
